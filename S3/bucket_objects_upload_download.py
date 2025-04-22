@@ -28,3 +28,28 @@ def upload_to_s3(local_file, bucket, s3_file) -> bool:
 
 # Example usage
 upload_to_s3('local_image.jpg', 'your-bucket-name', 'images/remote_image.jpg')
+
+def download_from_s3(bucket: str, s3_file: str, local_file: str) -> bool:
+    """
+    Download a file from an S3 bucket
+    
+    Args:
+    - bucket: Bucket to download from
+    - s3_file: S3 object name
+    - local_file: File to save to locally
+    
+    Return:
+    - Bool: True if file was downloaded, else False
+    """
+    s3 = boto3.client('s3')
+    
+    try:
+        s3.download_file(bucket, s3_file, local_file)
+        print(f"Download Successful: {local_file}")
+        return True
+    except Exception as e:
+        print(f"Error downloading file: {e}")
+        return False
+
+# Example usage
+download_from_s3('your-bucket-name', 'images/remote_image.jpg', 'downloaded_image.jpg')
