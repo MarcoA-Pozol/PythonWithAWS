@@ -80,3 +80,25 @@ def list_s3_files(bucket: str, prefix: str = '') -> None:
 
 # Example usage
 list_s3_files('your-bucket-name', 'images/')
+
+def delete_s3_file(bucket: str, s3_file: str) -> None:
+    """
+    Delete a file from an S3 bucket
+    
+    Args:
+    - bucket: Bucket name
+    - s3_file: File to delete
+    
+    Return:
+    - None: Prints success/error message
+    """
+    s3 = boto3.client('s3')
+    
+    try:
+        s3.delete_object(Bucket=bucket, Key=s3_file)
+        print(f"Successfully deleted {s3_file} from {bucket}")
+    except Exception as e:
+        print(f"Error deleting file: {e}")
+
+# Example usage
+delete_s3_file('your-bucket-name', 'images/remote_image.jpg')
