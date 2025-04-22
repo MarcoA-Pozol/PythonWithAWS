@@ -53,3 +53,30 @@ def download_from_s3(bucket: str, s3_file: str, local_file: str) -> bool:
 
 # Example usage
 download_from_s3('your-bucket-name', 'images/remote_image.jpg', 'downloaded_image.jpg')
+
+def list_s3_files(bucket: str, prefix: str = '') -> None:
+    """
+    List files in an S3 bucket
+    
+    Args:
+    - bucket: Bucket name
+    - prefix: Only list files with this prefix (like a directory)
+    
+    Return:
+    - None: Prints the list of files
+    """
+    s3 = boto3.client('s3')
+    
+    try:
+        response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+        if 'Contents' in response:
+            print(f"Files in {bucket}/{prefix}:")
+            for obj in response['Contents']:
+                print(obj['Key'])
+        else:
+            print(f"No files found in {bucket}/{prefix}")
+    except Exception as e:
+        print(f"Error listing files: {e}")
+
+# Example usage
+list_s3_files('your-bucket-name', 'images/')
